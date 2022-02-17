@@ -1,0 +1,316 @@
+﻿@model FullFunctionVM;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    <style>
+        .border-Red{
+            border-color:red
+        }
+    </style>
+    <div class="container">
+                <span style="display:none" id="spnFormIndex">@ViewBag.FormIndex</span>
+                            <div class="row">
+                               
+                                <div class="col-md-4">
+                                    <form asp-action="Index">
+                                        <input type="hidden" asp-for="FormIndex" value="1" />
+                                        <div class="form-group">
+                                            <label asp-for="InputText" class="control-label"></label>
+                                            <input asp-for="InputText" class="form-control" id="it1" />
+                                            <span asp-validation-for="InputText" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Select Language</label>
+                                            <select id="cmbLang" name="language" asp-for="language" class="form-control" asp-items="@ViewBag.langs"></select>
+                                        </div>
+
+                                        <div class="custom-control custom-radio">
+                                            <label> Gender</label>
+                                            <input type="radio" checked id="rbGender"
+                                                   value="M"
+                                                   asp-for="@Model.Gender " />Male
+
+                                            <input type="radio" id="rbGender"
+                                                   value="F"
+                                                   asp-for="@Model.Gender" /> Female
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <input type="submit" value="Convert" class="btn btn-primary" />
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+                               
+                            </div>
+                            <div style="margin:30px auto">
+                                @if (@ViewBag.OutputFile != "")
+                                {
+
+
+                            <div class="alert alert-success">
+                                <span>Text Converted , you can </span>
+                                <a href="\@ViewBag.OutputFile" target="_blank">Download </a> mp3 file
+                                <input type="button" onclick="playInput()" class="btn btn-info" value="Replay" />
+                            </div>
+                                            <!-- <audio autoplay>
+                     <source src="\@ViewBag.OutputFile" type="audio/mpeg" id="srcInput">
+                     Your browser does not support the audio element.
+                 </audio>-->}
+                            </div>
+                            <input type="hidden" id="hdAudio" value="..\@ViewBag.OutputFile" />
+                            
+                            <div>
+                             <button class="btn btn-success border-Red"  id="btnRecord">Record Sound</button>
+                             <button class="btn btn-success " id="btnUpload">Upload File</button>
+                                
+                            
+                            </div>
+        
+                           <form id="frmRecord" style="background-color: #ccc; margin: 30px auto" asp-action="Index" >
+                                                                    <input type="hidden" asp-for="FormIndex" value="2" />
+                                                                    <input type="hidden" asp-for="InputText" id="it2" />
+                                                                    <input type="hidden" asp-for="language" id="lang2" />
+                                                                    <input type="hidden" asp-for="Gender" id="gender2" />
+                                                                    <input type="hidden" id="hdAudio2" value="@ViewBag.OutputFile" name="OutputFile" />
+                                                                    <p>
+                                                                        <button id="btnStart" type="button">START RECORDING</button>
+
+                                                                        <button id="btnStop" type="button">STOP RECORDING</button>
+                                                                        <!--button for 'stop recording'-->
+                                                                    </p>
+
+
+
+                                                                    <input type="hidden" asp-for="AudioFileName" id="HiddenAudioFileName" />
+
+                                                                    <div>
+                                                                        <input id="hearYourVoice" type="button" onclick="playRecorded()" style="display:none" class="btn btn-info" value="hear your voice" />
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="submit" value="Check" class="btn btn-primary" onclick="return (document.getElementById('HiddenAudioFileName').value!=null && document.getElementById('HiddenAudioFileName').value!='')" />
+                                                                    </div>
+                                                                    @*@if (@ViewBag.Result != "" && @ViewBag.Result != null)
+                                                                        {
+                                                                            <div class="alert alert-@ViewBag.alert">
+                                                                            <span>@ViewBag.Result </span>
+                                                                            </div>
+                                                                        }*@
+                                                                </form>
+
+
+                           <form id="frmUpload" style="background-color:#eee;margin:30px auto;display:none" asp-action="Index" enctype="multipart/form-data">
+                                                                                <input type="hidden" asp-for="FormIndex" value="3" />
+                                                                                <input type="hidden" asp-for="InputText" id="it3" />
+                                                                                <input type="hidden" asp-for="language" id="lang3" />
+                                                                                <input type="hidden" asp-for="Gender" id="gender3" />
+                                                                                <input type="hidden" id="hdAudio3" value="@ViewBag.OutputFile" name="OutputFile" />
+                                                                                <div>
+                                                                                    <p> Upload Sound File :</p>
+                                                                                    <input type="file" name="FileToUpload" asp-for="FileToUpload" multiple id="uploader" />
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <input type="submit" value="Check" class="btn btn-primary" onclick="return document.getElementById('uploader').files.length > 0;" />
+                                                                                </div>
+                                                                            </form>
+                           <div style="margin:30px auto">          
+                              @if (@ViewBag.Result != "" && @ViewBag.Result != null)
+                                                                            {
+                                                                                <div class="alert alert-@ViewBag.alert">
+                                                                                    <span>@ViewBag.Result </span>
+                                                                                </div>
+                                                                            }
+                           </div>
+</div>                     
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section myJsCode{
+    <script>
+        var outputFile = document.getElementById('hdAudio').value
+        function playInput() {
+            var path = outputFile//$("#srcInput")[0].src
+            var audio = new Audio(path);
+            audio.play();
+        }
+        if (outputFile != null && outputFile != '..\\' && $("#spnFormIndex").text() == "1") {
+            playInput()
+        }
+        //////////////////////////////////////////
+
+        let audioIN = { audio: true };
+        // audio is true, for recording
+
+        // Access the permission for use
+        // the microphone
+        navigator.mediaDevices.getUserMedia(audioIN)
+
+            // 'then()' method returns a Promise
+            .then(function (mediaStreamObj) {
+                // Start record
+                let start = document.getElementById('btnStart');
+
+                // Stop record
+                let stop = document.getElementById('btnStop');
+
+                // This is the main thing to recorde
+                // the audio 'MediaRecorder' API
+                let mediaRecorder = new MediaRecorder(mediaStreamObj);
+                // Pass the audio stream
+
+                // Start event
+                start.addEventListener('click', function (ev) {
+                    audioIN.audio = true;
+                    mediaRecorder.start();
+                    // console.log(mediaRecorder.state);
+                })
+
+                // Stop event
+                stop.addEventListener('click', function (ev) {
+                    mediaRecorder.stop();
+                    audioIN.audio = false;
+                    // console.log(mediaRecorder.state);
+                });
+
+                // If audio data available then push
+                // it to the chunk array
+                mediaRecorder.ondataavailable = function (ev) {
+                    console.log(ev.data);
+                    dataArray.push(ev.data);
+                }
+
+                // Chunk array to store the audio data
+                let dataArray = [];
+
+                // Convert the audio data in to blob
+                // after stopping the recording
+                mediaRecorder.onstop = function (ev) {
+
+                    // blob of type mp3
+                    let audioData = new Blob(dataArray,
+                        { 'type': 'audio/mp3;' });
+
+                    // After fill up the chunk
+                    // array make it empty
+                    dataArray = [];
+
+                    // Creating audio url with reference
+                    // of created blob named 'audioData'
+                    let audioSrc = window.URL
+                        .createObjectURL(audioData);
+
+                    // Pass the audio url to the 2nd video tag
+                    //playAudio.src = audioSrc;
+
+                    //
+
+
+                    var reader = new window.FileReader();
+                    reader.readAsDataURL(audioData);
+
+                    reader.onloadend = function () {
+                        base64 = reader.result;
+                        base64 = base64.split(',')[1];
+
+                        $.ajax({
+                            url: '/CheckPronunciation/ReadMicrophone',
+                            type: 'POST',
+                            data: {
+                                // audioname: "hello",//obviously change to something dynamic
+                                chunks: base64
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                $('#HiddenAudioFileName').val(response)
+                                playRecorded();
+                                $('#hearYourVoice').fadeIn()
+                            },
+                            error: function (response) { console.log(response); }
+                        });
+                    }
+                    //
+                }
+            })
+
+            // If any error occurs then handles the error
+            .catch(function (err) {
+                console.log(err.name, err.message);
+            });
+
+
+
+        function playRecorded() {
+            var recordedFile = '\\audio\\' + document.getElementById('HiddenAudioFileName').value
+            var path = recordedFile//$("#srcInput")[0].src
+            var audio = new Audio(path);
+            audio.play();
+        }
+
+        var RecordedAudioFileName = document.getElementById('HiddenAudioFileName').value
+        if (RecordedAudioFileName != null && RecordedAudioFileName != '') {
+            $('#hearYourVoice').show();
+        }
+
+        ///
+        $("#it2").val($("#it1").val());
+        $("#it1").on("input", function () {
+            // Print entered value in a div box
+            $("#it2").val($(this).val());
+        });
+
+
+        $("#lang2").val($("#cmbLang").val())
+        $("#cmbLang").on("input", function () {
+            $("#lang2").val($(this).val())
+        })
+
+        $('#gender2').val($('[id=rbGender]:checked').val())
+        $('[id=rbGender]').change(function () {
+            s = $('[id=rbGender]:checked').val();
+            $('#gender2').val(s)
+        });
+
+        ///
+        $("#it3").val($("#it1").val());
+        $("#it1").on("input", function () {
+            // Print entered value in a div box
+            $("#it3").val($(this).val());
+        });
+
+
+        $("#lang3").val($("#cmbLang").val())
+        $("#cmbLang").on("input", function () {
+            $("#lang3").val($(this).val())
+        })
+
+        $('#gender3').val($('[id=rbGender]:checked').val())
+        $('[id=rbGender]').change(function () {
+            s = $('[id=rbGender]:checked').val();
+            $('#gender3').val(s)
+        });
+
+
+        $("#btnRecord").on('click',function () {
+            $("#frmRecord").fadeIn();
+            $("#frmUpload").fadeOut();
+            $(this).addClass('border-Red')
+            $("#btnUpload").removeClass('border-Red')
+        })
+        $("#btnUpload").on('click', function () {
+            
+            $("#frmRecord").fadeOut();
+            $("#frmUpload").fadeIn();
+            $(this).addClass('border-Red')
+            $("#btnRecord").removeClass('border-Red')
+        })
+    </script>
+}
+

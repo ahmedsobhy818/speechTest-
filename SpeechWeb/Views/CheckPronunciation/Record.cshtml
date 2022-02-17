@@ -1,0 +1,203 @@
+﻿@model RecordAudioVM;
+@{
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Record" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label asp-for="SampleText" class="control-label"></label>
+                    <input type="hidden" asp-for="SampleText" />
+                    <p style="font-size:20px;color:red;font-weight:bold">@Model.SampleText  </p>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Select Language</label>
+                    <select name="Language" asp-for="Language" class="form-control" asp-items="@ViewBag.langs"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Select Encoding</label>
+                    <select name="Encoding" asp-for="Encoding" class="form-control" asp-items="@ViewBag.encodings"></select>
+                </div>
+
+                <!--button for 'start recording'-->
+                <p>
+                    <button id="btnStart" type="button">START RECORDING</button>
+
+                    <button id="btnStop" type="button">STOP RECORDING</button>
+                    <!--button for 'stop recording'-->
+                </p>
+
+              
+
+                <input type="hidden" asp-for="AudioFileName" id="HiddenAudioFileName" />
+              
+            <div>
+                <input id="hearYourVoice" type="button" onclick="playRecorded()" style="display:none" class="btn btn-info" value="hear your voice" />
+            </div>
+                <div class="form-group">
+                    <input type="submit" value="Check" class="btn btn-primary" onclick="return (document.getElementById('HiddenAudioFileName').value!=null && document.getElementById('HiddenAudioFileName').value!='')" />
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+    @if (@ViewBag.Result != "" && @ViewBag.Result != null)
+    {
+
+
+        <div class="alert alert-@ViewBag.alert">
+            <span>@ViewBag.Result </span>
+        </div>
+    }
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+@section myJsCode{
+    <script>
+        let audioIN = { audio: true };
+        // audio is true, for recording
+
+        // Access the permission for use
+        // the microphone
+        navigator.mediaDevices.getUserMedia(audioIN)
+
+            // 'then()' method returns a Promise
+            .then(function (mediaStreamObj) {
+
+                // Connect the media stream to the
+                // first audio element
+                /*
+                let audio = document.querySelector('audio');
+                //returns the recorded audio via 'audio' tag
+
+                // 'srcObject' is a property which
+                // takes the media object
+                // This is supported in the newer browsers
+                if ("srcObject" in audio) {
+                    audio.srcObject = mediaStreamObj;
+                }
+                else { // Old version
+                    audio.src = window.URL
+                        .createObjectURL(mediaStreamObj);
+                }
+
+                // It will play the audio
+                audio.onloadedmetadata = function (ev) {
+
+                    // Play the audio in the 2nd audio
+                    // element what is being recorded
+                    audio.play();
+                };
+                */
+                // Start record
+                let start = document.getElementById('btnStart');
+
+                // Stop record
+                let stop = document.getElementById('btnStop');
+
+                // 2nd audio tag for play the audio
+                //let playAudio = document.getElementById('adioPlay');
+
+                // This is the main thing to recorde
+                // the audio 'MediaRecorder' API
+                let mediaRecorder = new MediaRecorder(mediaStreamObj);
+                // Pass the audio stream
+
+                // Start event
+                start.addEventListener('click', function (ev) {
+                    mediaRecorder.start();
+                    // console.log(mediaRecorder.state);
+                })
+
+                // Stop event
+                stop.addEventListener('click', function (ev) {
+                    mediaRecorder.stop();
+                    // console.log(mediaRecorder.state);
+                });
+
+                // If audio data available then push
+                // it to the chunk array
+                mediaRecorder.ondataavailable = function (ev) {
+                    console.log(ev.data);
+                    dataArray.push(ev.data);
+                }
+
+                // Chunk array to store the audio data
+                let dataArray = [];
+
+                // Convert the audio data in to blob
+                // after stopping the recording
+                mediaRecorder.onstop = function (ev) {
+
+                    // blob of type mp3
+                    let audioData = new Blob(dataArray,
+                        { 'type': 'audio/mp3;' });
+
+                    // After fill up the chunk
+                    // array make it empty
+                    dataArray = [];
+
+                    // Creating audio url with reference
+                    // of created blob named 'audioData'
+                    let audioSrc = window.URL
+                        .createObjectURL(audioData);
+
+                    // Pass the audio url to the 2nd video tag
+                    //playAudio.src = audioSrc;
+
+                    //
+
+                   
+                    var reader = new window.FileReader();
+                    reader.readAsDataURL(audioData);
+
+                    reader.onloadend = function () {
+                        base64 = reader.result;
+                        base64 = base64.split(',')[1];
+
+                        $.ajax({
+                            url: '/CheckPronunciation/ReadMicrophone',
+                            type: 'POST',
+                            data: {
+                               // audioname: "hello",//obviously change to something dynamic
+                                chunks: base64
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                $('#HiddenAudioFileName').val(response)
+                                playRecorded();
+                                $('#hearYourVoice').fadeIn()
+                            },
+                            error: function (response) { console.log(response); }
+                        });
+                    }
+                    //
+                }
+            })
+
+            // If any error occurs then handles the error
+            .catch(function (err) {
+                console.log(err.name, err.message);
+            });
+
+
+        
+        function playRecorded() {
+            var recordedFile ='\\audio\\' +  document.getElementById('HiddenAudioFileName').value
+            var path = recordedFile//$("#srcInput")[0].src
+            var audio = new Audio(path);
+            audio.play();
+        }
+
+        var RecordedAudioFileName = document.getElementById('HiddenAudioFileName').value
+        if (RecordedAudioFileName != null && RecordedAudioFileName != '') {
+            $('#hearYourVoice').show();
+        }
+    </script>
+}

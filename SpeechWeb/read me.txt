@@ -1,0 +1,11 @@
+1-console.cloud.google.com
+2-create project
+3-api ---> library-->search for "text to speech"
+4- enable api
+5-enter and validate credit card data
+6-manage api-->credentails
+7-create service account keys
+8-download its private key as json file
+9-save the json file in "SpeechWeb"  folder
+10-in appsettings.json file  set "MyCustomSettings"."CredentialJSONFile"   to the name of the json file
+

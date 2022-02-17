@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>
+        <a class="nav-link text-dark" asp-area="" asp-controller="ReadText" asp-action="Create">Read Text</a>
+    </p>
+    <p>
+        <a class="nav-link text-dark" asp-area="" asp-controller="CheckPronunciation" asp-action="Create">Check Pronunciation By Sound Upload</a>
+    </p>
+    <p>
+        <a class="nav-link text-dark" asp-area="" asp-controller="CheckPronunciation" asp-action="Record">Check Pronunciation By Microphone Recording</a>
+    </p>
+
+    <h1 >
+        <a class="nav-link text-dark" asp-area="" asp-controller="FullFunction" asp-action="Index">Test Yourself</a>
+    </h1>
+</div>

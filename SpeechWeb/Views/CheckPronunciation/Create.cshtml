@@ -1,0 +1,50 @@
+﻿@model CheckFileVM;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label asp-for="SampleText" class="control-label"></label>
+                    <input type="hidden" asp-for="SampleText" />
+                    <p style="font-size:20px;color:red;font-weight:bold">@Model.SampleText  </p>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Select Language</label>
+                    <select name="Language" asp-for="Language" class="form-control" asp-items="@ViewBag.langs"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Select Encoding</label>
+                    <select name="Encoding" asp-for="Encoding" class="form-control" asp-items="@ViewBag.encodings"></select>
+                </div>
+                <p> Upload Sound File :</p>
+                <input type="file" name="FileToUpload" asp-for="FileToUpload" multiple id="uploader" />
+
+                <div class="form-group">
+                    <input type="submit" value="Check" class="btn btn-primary" onclick="return document.getElementById('uploader').files.length > 0;" />
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+    @if (@ViewBag.Result != "" && @ViewBag.Result != null)
+    {
+
+
+        <div class="alert alert-@ViewBag.alert">
+            <span>@ViewBag.Result </span>
+        </div>
+    }
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "astral-comfort-339113",
+  "private_key_id": "ffabf3f1a62608f09799f9aff8088c2b75f7afc2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCrf5J2hFlvWqne\nKGe4CcJWJEnexq5Cc0dbgb0c3aGWKMNW51SG790CMebMX+WzFg/Ctqb5fxpZVCxP\nK0pcChmzkx5pSuZk2bDE9VDYUlN8R3Qzgfi8D7cFughKKarN7OaV2sVQFo3+Hvaj\nvxZB+KgtKcWKVFBp5BPnZRlxyyTfTYX+dtiLaMcc89QttUewkgDyX/pCa0JiKUmX\nN1HeQ+hLmXvQiGQgWrR99oQfWvAzy2J8nzecyqQrCQ6OQgkv6AGskg39RkBp+Maa\nYNnZRFqoKNSbgmIwN92yUvsO27w1yoOor2eQ2vYUO+qPq4DLMqm2gPKtfijw5UfO\nNb9w+IVLAgMBAAECggEAPNJFFMAyYbITPWUyB4x6fgdnpVjsE0gD/hmAgry9Yl45\njNgE28g0puMgucmm0oEX/NO/WwuvQg/+mOM+/25bmBqsdeYo2Ip1zRw9XEKyNgi3\nVs8Y8kVWgPLtnrOxTk/epTXNtW4SVJYRnZgW4jW4GzBNzRXC4RMQ1gc+Y2OKw6CL\njjHerhRuuMmlQsdxzw+4jEJqTxzU0BMo5M91y7Ud5Lj2QXSZLOj4E4aesioYf5R1\nf0fctQKkB3YB0fBXyoyPxTvQrO5fqbtxNBNbNrRtd+aVCfZsB8aZJZVkvqmmrOmg\nKmX5hU3OS0PJniOJfg1coCaNBddge8w23tNdUj0JGQKBgQDaTc0fypQFlWe+go5y\nDwk+G8NycYkMJO8nn++Zo+gVuc3AD4W2uxTEpUkTArWHaurKFXGNSBALX/qQ1T/C\nqvtFxu9/ekMf3V1bWWY9sRz44e2gbLoEsoDWR9cKbBkIeXM/HzGf9dS5s44UhenE\nISzSDVfH9JTsnlegbUT2Qu1SowKBgQDJHLbRr0dOk4VudKli1v9RX+qLSmiPR6Qz\nZuPE51E5xRMULX3xRtP7qMeWXVoaS3gKiqmanW406hKOy6NGSJtExie4fAz2Pfxf\ngyszsOUXJhf95IqKvyZHogMnSy0KnxEqk3rRWDriFkxtRr8uIe6BtHtIOa4wm1mn\nR3Nsx5tVOQKBgEZNAb64LRzzNTqbrqW6g951cGZ9e4XmqwGWtsFCkG3WrRSpqwTi\nkFiXZcXyfGUEoGG9sBiwWUJggT98/RCCoXKiEuR5if5L+lF9o7hAPjVEBJNCEFGM\n7oKTFgQsNY+OFPgB4qhBsWSwFxQy38oiaN2oIFmrQP5GK6/lIG0xtl2DAoGAI81j\n0nJkvF1QzLgiC4GA1GjB5Wgqsw8q8Seo9r3DXQhzfA0ZNaHJTSzf0yntR28WALJs\nvSS3oN3mzdr8xx9X3Od13Mbgu9mPGyXLxBkCv5s9fCp6a3baBriV3SHp89EbijvV\nCn2theA4XN/SWxEZV6fcpp/2HZsaW8hBiSUDxykCgYEAqR7bnuUbSHJpSekqVv7R\nx9ozrdoMqGugDTawahh/Nbg+HoK1CHniIIutnUs7ZNmRR6aQ4bPyf0eFutD4TjAx\njPbLyzrtUaW+xVTiaXD7CI6uaxlYsdMKwvMR1Rlb7IedOb6ma/aXmyswXWufPXIm\nERvNz/AkvdB9kLkpi53bn4I=\n-----END PRIVATE KEY-----\n",
+  "client_email": "myspeechapp@astral-comfort-339113.iam.gserviceaccount.com",
+  "client_id": "108726075493324996494",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/myspeechapp%40astral-comfort-339113.iam.gserviceaccount.com"
+}
