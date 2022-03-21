@@ -1,0 +1,6 @@
+how are you|كيف حالك|full
+welcome|مرحبا|short
+good morning|صباح الخير|full
+good bye|الى اللقاء|short
+he|هو|full
+thank you|شكرا|short
