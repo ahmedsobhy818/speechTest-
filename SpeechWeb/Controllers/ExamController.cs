@@ -23,9 +23,10 @@ namespace SpeechWeb.Controllers
         }
         public IActionResult Index()
         {
+            ExamVM obj = new ExamVM();
             GetError(null);
             GetCount(null);
-            return View();
+            return View(obj);
         }
 
         [HttpPost]

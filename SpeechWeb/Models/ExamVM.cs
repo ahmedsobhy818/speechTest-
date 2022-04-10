@@ -12,8 +12,8 @@ namespace SpeechWeb.Models
         [Required]
         public IFormFile FileToUpload { get; set; }
         
-        [Range(0, 3, ErrorMessage = "Please enter a number  between 0 and 3")]
-        public int nMistakes { get; set; }
+        [Range(0, 1000, ErrorMessage = "Please enter a number  between 0 and 1000")]
+        public int nMistakes { get { return _nMistakes; } set { _nMistakes = value; } }
 
         public bool Pronounciation { get; set; }
         public bool PronounciationCheck { get; set; }
@@ -25,6 +25,8 @@ namespace SpeechWeb.Models
         public List<ExamItem> Questions { get; set; }
 
         public bool ExamStarted { get; set; }
+
+        int _nMistakes = 1000;
     }
 
     public class ExamItem

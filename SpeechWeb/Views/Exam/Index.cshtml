@@ -37,6 +37,10 @@
             text-align: center;
             float: left;
         }
+        .play{
+            color:red;
+            font-weight:bold 
+        }
     </style>
 </head>    
 <body>
@@ -50,7 +54,7 @@
                     <span asp-validation-for="FileToUpload" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display:none">
                     <span>Number Of Allowed Mistakes :</span>
                     <input asp-for="nMistakes" class="form-control" />
                     <span asp-validation-for="nMistakes" class="text-danger"></span>
@@ -149,7 +153,7 @@
                             <img src="~/input/1.jpg" style="width:100%">
                             <div class="carousel-caption d-none d-md-block">
                                 <div class="alert alert-success resultOK">Excellent</div>
-                                <div class="alert alert-danger resultBAD">You Exceeded numberr of allowed errors</div>
+                                <div class="alert alert-danger resultBAD">You Exceeded number of allowed errors</div>
                             </div>
                         </div>
 
@@ -173,6 +177,7 @@
                         <div>
                             <span class="replay" style="display:none;cursor:pointer;margin:auto 20px;text-decoration:underline">Replay </span>
                             <span class="rec" style="display:none;cursor:pointer;margin:auto 20px;text-decoration:underline">Record</span>
+                            <span class="stop" style="display:none;cursor:pointer;margin:auto 20px;text-decoration:underline">Stop</span>
                             <span class="skip" style="cursor:pointer;margin:auto 20px;text-decoration:underline">Skip </span>
 
                         </div>
@@ -269,10 +274,11 @@
 
                 if (e.which == 32) {
                     //  $('.carousel').carousel('next');
+                    
                     if ($('span.rec').css('display') == 'none')
                         $('.carousel').carousel('next');
-                    else
-                    $('span.rec').click();
+                    //else
+                    //$('span.rec').click();*/
                 }
 
             });
@@ -289,11 +295,13 @@
 
                 if ($('#PronounciationCheck')[0].checked) {
                     $('span.rec').fadeIn();
+                    $('span.stop').fadeIn();
                     //$('span.help').fadeIn();
                     $('span.skip').fadeIn();
                 }
                 else {
                     $('span.rec').fadeOut();
+                    $('span.stop').fadeOut();
                    // $('span.help').fadeOut();
                     $('span.skip').fadeOut();
                 }
@@ -383,13 +391,14 @@
             .then(function (mediaStreamObj) {
                 // Start-stop record
                 let btn = $('span.rec');
-
+                let btn2 = $('span.stop');
 
                 // This is the main thing to recorde
                 // the audio 'MediaRecorder' API
                 let mediaRecorder = new MediaRecorder(mediaStreamObj);
                 // Pass the audio stream
 
+                /*
                 btn.on('click', function () {
                     if ($(this).text() == "Record") {
                         audioIN.audio = true;
@@ -401,6 +410,24 @@
                         audioIN.audio = false;
                         $(this).text("Record")
                     }
+                })
+                */
+                btn.on('click', function () {
+                    if (btn.hasClass('play'))
+                        return;
+                    btn.addClass('play')
+                       audioIN.audio = true;
+                    mediaRecorder.start();
+                    
+                })
+                btn2.on('click', function () {
+                    if (!btn.hasClass('play'))
+                        return;
+
+                    btn.removeClass('play')
+                    mediaRecorder.stop();
+                    audioIN.audio = false;
+                    
                 })
                 // If audio data available then push
                 // it to the chunk array
