@@ -81,7 +81,7 @@
             else
             { 
             <div style="background-color:navajowhite">
-                <div class="form-group">
+                <div class="form-group" style="display:none">
                     <span>Number Of Allowed Mistakes :</span>
                     <input asp-for="nMistakes" class="form-control"  readonly />
                  
@@ -295,7 +295,7 @@
 
                 if ($('#PronounciationCheck')[0].checked) {
                     $('span.rec').fadeIn();
-                    $('span.stop').fadeIn();
+                   // $('span.stop').fadeIn();
                     //$('span.help').fadeIn();
                     $('span.skip').fadeIn();
                 }
@@ -429,6 +429,26 @@
                     audioIN.audio = false;
                     
                 })
+                //
+                document.addEventListener('keydown', (event) => {
+                    var name = event.key;
+                    var code = event.code;
+
+                    let btn = $('span.rec');
+                    let btn2 = $('span.stop');
+                    console.log(btn);
+                    if (name == 'Enter') {
+                        if (btn.hasClass('play')) {
+                            btn2.click();
+                        }
+                        else {
+                            btn.click();
+                        }
+                    }
+                    // Alert the key name and key code on keydown
+                    //alert(`Key pressed ${name} \r\n Key code value: ${code}`);
+                }, false);
+                //
                 // If audio data available then push
                 // it to the chunk array
                 mediaRecorder.ondataavailable = function (ev) {
