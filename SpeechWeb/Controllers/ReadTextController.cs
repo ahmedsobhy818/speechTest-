@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using SpeechWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace SpeechWeb.Controllers
     public class ReadTextController : Controller
     {
         IWebHostEnvironment _hostingEnvironment;
-        public ReadTextController(IWebHostEnvironment hostingEnvironment)
+        IConfiguration _Configuration;
+        public ReadTextController(IWebHostEnvironment hostingEnvironment, IConfiguration Configuration)
         {
             _hostingEnvironment = hostingEnvironment;
+            _Configuration = Configuration;
         }
         public IActionResult Index()
         {
@@ -44,7 +47,10 @@ namespace SpeechWeb.Controllers
 
         string  ReadText(string inputText,string language,string Gender)
         {
-            string jsonPath = _hostingEnvironment.ContentRootPath + @"\astral-comfort-339113-ffabf3f1a626.json"; 
+            //  string jsonPath = _hostingEnvironment.ContentRootPath + @"\astral-comfort-339113-ffabf3f1a626.json"; 
+            string json = _Configuration.GetSection("MyCustomSettings").GetSection("CredentialJSONFile").Value;
+            string jsonPath = _hostingEnvironment.ContentRootPath + @"\" + json;
+
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", jsonPath);
 
             var client = TextToSpeechClient.Create();

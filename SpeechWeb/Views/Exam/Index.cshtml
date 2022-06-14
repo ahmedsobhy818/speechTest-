@@ -210,7 +210,7 @@
     <script>
         var files = [];
         var skipped = [];
-       
+        //var spaceIndex = 0;
         //if ($('.carousel-item.active p:visible').length == 1) {
         //    $('span.help').fadeOut()
         //}
@@ -277,8 +277,23 @@
                     
                     if ($('span.rec').css('display') == 'none')
                         $('.carousel').carousel('next');
+                    else {
+                        //rec then stop
+                        let btn = $('span.rec');
+                        let btn2 = $('span.stop');
+                        if (btn.hasClass('play')) {
+                            btn2.click();
+                        }
+                        else {
+                            btn.click();
+                        }
+                    }
                     //else
                     //$('span.rec').click();*/
+                }
+                if (e.which == 39)//right arrow
+                {
+                    $('span.skip').click();
                 }
 
             });

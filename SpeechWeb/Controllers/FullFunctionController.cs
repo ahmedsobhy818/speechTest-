@@ -72,7 +72,10 @@ namespace SpeechWeb.Controllers
 
         string ReadText(string inputText, string language, string Gender)
         {
-            string jsonPath = _hostingEnvironment.ContentRootPath + @"\astral-comfort-339113-ffabf3f1a626.json";
+            // string jsonPath = _hostingEnvironment.ContentRootPath + @"\astral-comfort-339113-ffabf3f1a626.json";
+            string json = _Configuration.GetSection("MyCustomSettings").GetSection("CredentialJSONFile").Value;
+            string jsonPath = _hostingEnvironment.ContentRootPath + @"\" + json;
+
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", jsonPath);
 
             var client = TextToSpeechClient.Create();
