@@ -295,6 +295,11 @@
                 {
                     $('span.skip').click();
                 }
+                if (e.which == 72 || e.which == 104) {
+                    if ($('span.help').css('display')=="block")
+                        $('span.help').click()
+
+                }
 
             });
 
